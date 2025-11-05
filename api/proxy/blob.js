@@ -1,26 +1,33 @@
 // api/proxy/blob.js
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const fetch = require("node-fetch");
 
-const validBlobHostSuffixes = ['blob.core.windows.net'];
+module.exports = async function (context, req) {
+    try {
+        const blobHost = req.headers["x-blob-host"];
 
-const blobProxy = createProxyMiddleware({
-    changeOrigin: true,
-    secure: true,
-    target: '/',
-    pathRewrite: { '^/api/proxy/blob': '' },
-    router: (req) => {
-        const blobHost = req.headers['x-blob-host'];
-        if (!blobHost) throw new Error('Missing x-blob-host header');
-
-        const blobUrl = `https://${blobHost.replace(/^https?:\/\//, '').replace(/\/$/, '')}`;
-        const blobUrlObject = new URL(blobUrl);
-
-        if (validBlobHostSuffixes.some(suffix => blobUrlObject.host.endsWith(suffix))) {
-            return blobUrl;
+        if (!blobHost) {
+            context.res = { status: 400, body: "Missing x-blob-host header" };
+            return;
         }
 
-        throw new Error('Invalid Blob URL');
-    }
-});
+        const urlPath = req.url.replace(/^\/api\/proxy\/blob/, "");
+        const blobUrl = `https://${blobHost}${urlPath}`;
 
-module.exports = blobProxy;
+        const response = await fetch(blobUrl);
+        const buffer = await response.arrayBuffer();
+
+        // Determine content type
+        const contentType = response.headers.get("content-type") || "application/octet-stream";
+
+        context.res = {
+            status: response.status,
+            headers: { "Content-Type": contentType },
+            body: Buffer.from(buffer),
+        };
+    } catch (err) {
+        context.res = {
+            status: 500,
+            body: `Proxy error: ${err.message}`,
+        };
+    }
+};
