@@ -5,10 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-const selfOpen = window.open;
-(window.open as any) = function(url: any, windowName: any, parms: any) {
-  selfOpen(url,"_self",parms || "")
-};
+// const selfOpen = window.open;
+// (window.open as any) = function(url: any, windowName: any, parms: any) {
+//   selfOpen(url,"_self",parms || "")
+// };
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

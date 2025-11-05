@@ -47,17 +47,18 @@ function App() {
       )
     );
   }, []);
- 
-useEffect(() => {
-  if (adapter) {
-    adapter.getScenesConfig().then(({ result }) => {
-      console.log("Scenes config result:", result);
-      setScenesConfig(result.data as any);
-    }).catch(err => {
-      console.error("Failed to fetch scenes config:", err);
-    });
-  }
-}, [adapter]);
+
+  useEffect(() => {
+    if (adapter) {
+      adapter.getScenesConfig().then(({ result }) => {
+        if (result && result.data) {
+          setScenesConfig(result.data as any);
+        }
+      }).catch(err => {
+        console.error("Failed to fetch scenes config:", err);
+      });
+    }
+  }, [adapter]);
 
   return !scenesConfig ? (
     <div>Loading scenes...</div>

@@ -12,11 +12,11 @@ module.exports = function (app) {
         'Accept',
         'Accept-Encoding',
         'Accept-Language',
-        'authorization',
+        'Authorization',
         'Content-Length',
         'content-type',
         'Host',
-        'x-ms-client-request-id', 
+        'x-ms-client-request-id',
         'x-ms-useragent',
         'User-Agent',
         'x-ms-version',
@@ -68,7 +68,12 @@ module.exports = function (app) {
             router: (req) => {
                 // Validate ADT environment URL
                 const xAdtHostHeader = req.headers['x-adt-host'].toLowerCase();
-                const adtUrl = `https://${xAdtHostHeader}/`;
+                var xAdtHostHeadernew = xAdtHostHeader
+                    .replace(/^https?:\/\//, '')
+                    .replace(/\/$/, '');
+
+                const adtUrl = `https://${xAdtHostHeadernew}`;
+
                 const adtUrlObject = new URL(adtUrl);
                 if (
                     validAdtHostSuffixes.some((suffix) =>
@@ -139,7 +144,7 @@ module.exports = function (app) {
                         : 1;
                     console.log(
                         'Proxy server retry request attempt number: ' +
-                            req.currentRetryAttempt
+                        req.currentRetryAttempt
                     );
                     blobProxy.call(blobProxy, req, res); // resend the original request to proxy middleware again
                 } else {
