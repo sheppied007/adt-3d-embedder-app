@@ -51,8 +51,8 @@ function App() {
   useEffect(() => {
     if (adapter) {
       adapter.getScenesConfig().then(({ result }) => {
+        console.log("Results:", result);
         if (result && result.data) {
-          console.log("Scenes config fetched:", result.data);
           setScenesConfig(result.data as any);
         }
       }).catch(err => {
