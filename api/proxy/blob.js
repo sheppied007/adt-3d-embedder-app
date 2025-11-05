@@ -1,33 +1,51 @@
-// api/proxy/blob.js
-const fetch = require("node-fetch");
-
-module.exports = async function (context, req) {
+export async function handler(req, context) {
     try {
         const blobHost = req.headers["x-blob-host"];
 
         if (!blobHost) {
-            context.res = { status: 400, body: "Missing x-blob-host header" };
-            return;
+            return {
+                status: 400,
+                body: "Missing x-blob-host header"
+            };
         }
 
-        const urlPath = req.url.replace(/^\/api\/proxy\/blob/, "");
-        const blobUrl = `https://${blobHost}${urlPath}`;
+        const originalUrl = new URL(req.url);
+        const path = originalUrl.pathname.replace('/api/blob', '');
+        const blobUrl = `https://${blobHost}${path}${originalUrl.search}`;
 
         const response = await fetch(blobUrl);
         const buffer = await response.arrayBuffer();
 
-        // Determine content type
         const contentType = response.headers.get("content-type") || "application/octet-stream";
 
-        context.res = {
+        return {
             status: response.status,
-            headers: { "Content-Type": contentType },
-            body: Buffer.from(buffer),
+            headers: {
+                "Content-Type": contentType,
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, OPTIONS",
+                "Access-Control-Allow-Headers": "x-blob-host"
+            },
+            body: Buffer.from(buffer).toString('base64'),
+            isBase64Encoded: true
         };
     } catch (err) {
-        context.res = {
+        console.error("Proxy error:", err);
+        return {
             status: 500,
-            body: `Proxy error: ${err.message}`,
+            body: `Proxy error: ${err.message}`
         };
     }
-};
+}
+
+// Handle CORS preflight requests
+export async function options() {
+    return {
+        status: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+            "Access-Control-Allow-Headers": "x-blob-host"
+        }
+    };
+}

@@ -1,13 +1,30 @@
 {
     "routes": [
         {
-            "route": "/api/*",
-            "allowedRoles": [
-                "anonymous"
-            ]
+            "route": "/proxy/adt/{*rest}",
+            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE"
+            ],
+            "rewrite": "/api/adt"
+        },
+        {
+            "route": "/proxy/blob/{*rest}",
+            "methods": [
+                "GET"
+            ],
+            "rewrite": "/api/blob"
         }
     ],
     "navigationFallback": {
         "rewrite": "/index.html"
+    },
+    "responseOverrides": {
+        "404": {
+            "rewrite": "/index.html"
+        }
     }
 }

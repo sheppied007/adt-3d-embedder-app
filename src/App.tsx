@@ -37,6 +37,7 @@ function App() {
       }
     };
 
+
     setAdapter(
       new ADT3DSceneAdapter(
         new MsalAuthService(authenticationParameters.aadParameters),
