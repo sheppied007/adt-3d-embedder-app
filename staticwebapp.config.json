@@ -2,17 +2,32 @@
     "routes": [
         {
             "route": "/proxy/adt/*",
-            "rewrite": "/api/adt"
+            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+            ],
+            "rewrite": "/api/proxy/adt"
         },
         {
             "route": "/proxy/blob/*",
-            "rewrite": "/api/blob"
+            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+            ],
+            "rewrite": "/api/proxy/blob"
         }
     ],
     "navigationFallback": {
         "rewrite": "/index.html",
         "exclude": [
-            "/proxy/*",
             "/api/*"
         ]
     }
