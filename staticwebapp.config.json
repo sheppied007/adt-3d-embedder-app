@@ -1,7 +1,7 @@
 {
     "routes": [
         {
-            "route": "/proxy/adt/{*rest}",
+            "route": "/proxy/adt/{*rest*}",
             "methods": [
                 "GET",
                 "POST",
@@ -9,14 +9,14 @@
                 "PATCH",
                 "DELETE"
             ],
-            "rewrite": "/api/adt"
+            "rewrite": "/api/proxy/adt"
         },
         {
-            "route": "/proxy/blob/{*rest}",
+            "route": "/proxy/blob/{*rest*}",
             "methods": [
                 "GET"
             ],
-            "rewrite": "/api/blob"
+            "rewrite": "/api/proxy/blob"
         }
     ],
     "navigationFallback": {
