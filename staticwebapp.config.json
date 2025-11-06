@@ -2,29 +2,18 @@
     "routes": [
         {
             "route": "/proxy/adt/*",
-            "methods": [
-                "GET",
-                "POST",
-                "PUT",
-                "PATCH",
-                "DELETE"
-            ],
-            "rewrite": "/api/proxy/adt"
+            "rewrite": "/api/adt"
         },
         {
             "route": "/proxy/blob/*",
-            "methods": [
-                "GET"
-            ],
-            "rewrite": "/api/proxy/blob"
+            "rewrite": "/api/blob"
         }
     ],
     "navigationFallback": {
-        "rewrite": "/index.html"
-    },
-    "responseOverrides": {
-        "404": {
-            "rewrite": "/index.html"
-        }
+        "rewrite": "/index.html",
+        "exclude": [
+            "/proxy/*",
+            "/api/*"
+        ]
     }
 }
