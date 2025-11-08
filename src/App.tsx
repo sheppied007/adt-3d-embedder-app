@@ -18,7 +18,7 @@ function App() {
   console.log("App loaded");
 
   const search = useLocation().search;
-  const sceneId = new URLSearchParams(search).get('sceneId') ?? 'Home1';
+  const sceneId = new URLSearchParams(search).get('sceneId') ?? '942097f6332e4f21ab3652a55481fc34';
 
   const [adapter, setAdapter] = useState<ADT3DSceneAdapter | null>(null);
   const [scenesConfig, setScenesConfig] = useState(null);
@@ -63,7 +63,7 @@ function App() {
   }, [adapter]);
 
   return !scenesConfig ? (
-    <div>Loading scenes...</div>
+    <div>Loading scenes..</div>
   ) : (
     <div style={cardStyle}>
       <ADT3DViewer

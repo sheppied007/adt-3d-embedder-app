@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
@@ -20,6 +21,11 @@ module.exports = function override(config) {
     new webpack.ProvidePlugin({
       process: 'process/browser',
       Buffer: ['buffer', 'Buffer']
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'node_modules/@fluentui/font-icons-mdl2/fonts', to: 'fabric-font' }
+      ]
     })
   ]);
 
