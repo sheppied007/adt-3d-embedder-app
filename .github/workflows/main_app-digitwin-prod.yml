@@ -60,6 +60,9 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_48CBC90437994654A1D8F666831C86AF }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_32B9B7789EE54B4DAC263A014CF4E3A6 }}
 
+      - name: Install dependencies on Azure WebApp
+        run: npm ci --only=
+
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
