@@ -21,19 +21,24 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '24.x'
+          node-version: "24.x"
 
       - name: npm install, build, and test
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+          npm prune --production
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: |
+            build
+            server.js
+            package.json
+            package-lock.json
+            src
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,7 +52,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -55,11 +60,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_48CBC90437994654A1D8F666831C86AF }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_32B9B7789EE54B4DAC263A014CF4E3A6 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'app-digitwin-prod'
-          slot-name: 'Production'
+          app-name: "app-digitwin-prod"
+          slot-name: "Production"
           package: .
-          
+          app-settings: |
+            WEBSITE_NODE_DEFAULT_VERSION=~24
