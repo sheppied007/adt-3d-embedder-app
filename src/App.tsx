@@ -16,8 +16,9 @@ const cardStyle = {
 
 function App() {
     const search = useLocation().search;
-    const sceneId = new URLSearchParams(search).get('sceneId') ?? '942097f6332e4f21ab3652a55481fc34';
+    // const sceneId = process.env.REACT_APP_SCENE_ID ?? "942097f6332e4f21ab3652a55481fc34";
 
+    const [sceneId, setSceneId] = useState<string>("");
     const [adapter, setAdapter] = useState<ADT3DSceneAdapter | null>(null);
     const [scenesConfig, setScenesConfig] = useState(null);
 
@@ -59,6 +60,9 @@ function App() {
                 console.error("Failed to fetch scenes config:", err);
             });
         }
+
+        let sceneIdFromSettings = process.env.REACT_APP_SCENE_ID ?? "942097f6332e4f21ab3652a55481fc34";
+        setSceneId(sceneIdFromSettings);
     }, [adapter]);
 
     return !scenesConfig ? (
