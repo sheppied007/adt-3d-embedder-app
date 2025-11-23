@@ -62,7 +62,10 @@ function App() {
     }, [adapter]);
 
     return !scenesConfig ? (
-        <div>Loading scenes..</div>
+        <div className="loading-container">
+            <img src="/adt.png" alt="Loading Icon" className="loading-icon" />
+            <div className="dot-spinner"></div>
+        </div>
     ) : (
         <div style={cardStyle}>
             <ADT3DViewer
