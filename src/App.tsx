@@ -15,9 +15,6 @@ const cardStyle = {
 } as React.CSSProperties;
 
 function App() {
-    const search = useLocation().search;
-    // const sceneId = process.env.REACT_APP_SCENE_ID ?? "942097f6332e4f21ab3652a55481fc34";
-
     const [sceneId, setSceneId] = useState<string>("");
     const [adapter, setAdapter] = useState<ADT3DSceneAdapter | null>(null);
     const [scenesConfig, setScenesConfig] = useState(null);
