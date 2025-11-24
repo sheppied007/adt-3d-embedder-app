@@ -6,7 +6,7 @@ const retryNumber = 3;
 
 module.exports = function (app) {
     const validAdtHostSuffixes = ['digitaltwins.azure.net'];
-    const validBlobHostSuffixes = ['blob.core.windows.net'];
+    const validBlobHostSuffixes = ['blob.core.windows.net', 'digitwin-3dscene-gmgaf6a2eabmgxby.z01.azurefd.net'];
 
     const validHeaders = [
         'Accept',
